@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="StickySelectionHighlights">
+    <option name="editorHighlights">
+      <map>
+        <entry key="$PROJECT_DIR$/Assets/Scripts/Controllers/GameController.cs">
+          <value>
+            <PaintGroupHighlightMap>
+              <option name="paintGroups">
+                <map>
+                  <entry key="3">
+                    <value>
+                      <EditorHighlightsForPaintGroup>
+                        <option name="highlights">
+                          <list>
+                            <HighlightOffset>
+                              <option name="start" value="222" />
+                              <option name="end" value="257" />
+                            </HighlightOffset>
+                            <HighlightOffset>
+                              <option name="start" value="262" />
+                              <option name="end" value="332" />
+                            </HighlightOffset>
+                            <HighlightOffset>
+                              <option name="start" value="717" />
+                              <option name="end" value="900" />
+                            </HighlightOffset>
+                            <HighlightOffset>
+                              <option name="start" value="1319" />
+                              <option name="end" value="1375" />
+                            </HighlightOffset>
+                          </list>
+                        </option>
+                      </EditorHighlightsForPaintGroup>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </PaintGroupHighlightMap>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
