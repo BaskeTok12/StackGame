@@ -19,29 +19,6 @@ public class CubeSpawner : MonoBehaviour
         }
         return new Vector3(xPosition, zSpawnerPosition.position.y , zPosition);
     }
-    // public void SpawnCube()
-    // {
-    //     var newCube = Instantiate(cubePrefab);
-    //     if (MovingCubeController.LastCubeController != null && MovingCubeController.LastCubeController.gameObject != GameObject.Find("StartCube"))
-    //     {
-    //         float xPosition = moveDirection == MoveDirection.X
-    //             ? transform.position.x
-    //             : MovingCubeController.LastCubeController.transform.position.x;
-    //         
-    //         float zPosition = moveDirection == MoveDirection.Z
-    //             ? transform.position.z
-    //             : MovingCubeController.LastCubeController.transform.position.z;
-    //         
-    //         newCube.transform.position = new Vector3(xPosition,
-    //             MovingCubeController.LastCubeController.transform.position.y + cubePrefab.transform.localScale.y, zPosition);
-    //     }
-    //     else
-    //     {
-    //         newCube.transform.position = transform.position;
-    //     }
-    //
-    //     newCube.MoveDirection = moveDirection;
-    // }
 
     public Vector3 GetDefaultPosition()
     {

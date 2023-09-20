@@ -2,21 +2,28 @@ using System;
 using Controllers;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
+
 public class ScoreCounterScript : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI text;
-    public int Score { get; private set; } = 1;
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private TextMeshProUGUI scoreText;
 
     private void OnEnable()
     {
-        MovingCubeController.OnStack += () => {text.text = Score++.ToString(); };
-        GameManager.OnRestart += () => { Score = 0; };
+       
     }
 
     private void OnDisable()
     {
-        MovingCubeController.OnStack -= () => {text.text = Score++.ToString(); };
-        GameManager.OnRestart -= () => { Score = 0; };
+        
+        
     }
+
+    private void UpdateScore()
+    {
+        scoreText.text = gameManager.Scores.ToString();
+    }
+    
 }
 

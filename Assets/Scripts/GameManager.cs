@@ -12,8 +12,7 @@ public class GameManager : MonoBehaviour
     public static Action OnClick;
     
     public static Action OnRestart;
-
-    public static Action OnMiss;
+    
 
     private SoundManager _soundManager;
 
@@ -29,6 +28,12 @@ public class GameManager : MonoBehaviour
     private InputManager _inputManager;
     private InputController.PlayerInteractionsActions _playerInteractions;
 
+    
+    //
+    public int Scores { private set; get; }
+    public int BestScore { private set; get; }
+    public int PerfectStacksCount { private set; get; }
+    //
     [Inject]
     private void Construct(InputManager inputManager)
     {
@@ -43,6 +48,20 @@ public class GameManager : MonoBehaviour
         _playerInteractions.Click.started += context => OnClick.Invoke();
     }
 
+    private void OnEnable()
+    {
+        MovingCubeController.OnStack += () => Scores += 1;
+        MovingCubeController.OnPerfectStack += () => PerfectStacksCount += 1;
+        MovingCubeController.OnSlice += () => PerfectStacksCount = 0;
+    }
+
+    private void OnDisable()
+    {
+        MovingCubeController.OnStack -= () => Scores += 1;
+        MovingCubeController.OnPerfectStack -= () => PerfectStacksCount += 1;
+        MovingCubeController.OnSlice -= () => PerfectStacksCount = 0;
+    }
+
     public void StartGame()
     {
         OnStart.Invoke();
@@ -50,10 +69,17 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        StartCoroutine(ClearAllCubesCoroutine());
+        StartCoroutine(
+            ClearAllCubesCoroutine());
         OnRestart.Invoke();
     }
-    
+
+    private void IncreaseScore()
+    {
+        Scores += 1;
+        
+    }
+
     private void SetResolutionAndFrameRate()
     {
         Resolution[] resolutions = Screen.resolutions;
@@ -74,7 +100,6 @@ public class GameManager : MonoBehaviour
                 yield return new WaitForSeconds(latency);
             }
         }
-        
     }
 }
 

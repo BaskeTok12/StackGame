@@ -26,6 +26,7 @@ namespace Controllers
 
         public static Action OnStack;
         public static Action OnPerfectStack;
+        public static Action OnSlice;
         
         private MoveDirection _moveDirection = MoveDirection.Z;
     
@@ -123,7 +124,7 @@ namespace Controllers
                 float max = _moveDirection == MoveDirection.Z
                     ? lastCubeTransform.transform.localScale.z
                     : lastCubeTransform.transform.localScale.x;
-
+                
                 if (Mathf.Abs(hangover) <= perfectHangoverDeviation)
                 {
                     hangover = 0;
@@ -162,7 +163,6 @@ namespace Controllers
 
         private void PerfectStack()
         {
-            //SoundManager.SoundManagerInstance.PlaySound(_perfectStackSounds[_perfectStackCounter]);
             transform.position = new Vector3(lastCubeTransform.transform.position.x, transform.position.y, lastCubeTransform.transform.position.z);
         }
 
@@ -258,7 +258,7 @@ namespace Controllers
         {
             _rigidbody.isKinematic = false;
             isCanMove = false;
-            GameManager.OnMiss.Invoke();
+            OnSlice.Invoke();
         }
 
         private void ModifyMoveDirection()
