@@ -1,6 +1,5 @@
 using System;
 using Controllers;
-using DefaultNamespace;
 using DG.Tweening;
 using UnityEngine;
 
@@ -24,15 +23,15 @@ public class CameraManager : MonoBehaviour
     {
         GameManager.OnStart += () => SetCameraSize(InGameCameraSise);
         MovingCubeController.OnStack += () => RaiseCameraPosition();
-        GameManager.OnRestart += () => SetCameraSize(MissCameraSise);
-        GameManager.OnRestart += () => ResetCamera();
+        GameManager.OnMiss += () => SetCameraSize(MissCameraSise); //was OnRestart
+        GameManager.OnRestart += () => ResetCamera(); 
     }
 
     private void OnDisable()
     {
         GameManager.OnStart -= () => SetCameraSize(InGameCameraSise);
         MovingCubeController.OnStack -= () => RaiseCameraPosition();
-        GameManager.OnRestart -= () => SetCameraSize(MissCameraSise);
+        GameManager.OnMiss -= () => SetCameraSize(MissCameraSise); //was OnRestart
         GameManager.OnRestart -= () => ResetCamera();
     }
 

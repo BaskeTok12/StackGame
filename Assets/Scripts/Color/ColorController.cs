@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-namespace DefaultNamespace
-{
     public class ColorController : MonoBehaviour
     {
         public static Color GetRandomColor()
@@ -9,4 +7,3 @@ namespace DefaultNamespace
             return new Color(UnityEngine.Random.Range(0, 1f), UnityEngine.Random.Range(0, 1f),UnityEngine.Random.Range(0, 1f));
         }
     }
-}

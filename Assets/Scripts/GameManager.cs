@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Controllers;
@@ -10,17 +8,14 @@ using Zenject;
 public class GameManager : MonoBehaviour
 {
     public static Action OnStart;
-
-    public static Action OnClick;
-    
     public static Action OnRestart;
 
+    public static Action OnMiss;
+    
+    public static Action OnClick;
     public static Action OnScoreIncreased;
     
     private SoundManager _soundManager;
-
-    private bool _isAfterLoading;
-    private int _perfectStackCounter;
 
     private const float CubesDeletingDuration = 0.5f;
 
@@ -30,13 +25,11 @@ public class GameManager : MonoBehaviour
     
     private InputManager _inputManager;
     private InputController.PlayerInteractionsActions _playerInteractions;
-
     
-    //
     public int Scores { private set; get; }
     public int BestScore { private set; get; }
     public int PerfectStacksCount { private set; get; }
-    //
+    
     [Inject]
     private void Construct(InputManager inputManager)
     {
@@ -54,19 +47,17 @@ public class GameManager : MonoBehaviour
     private void OnEnable()
     {
         MovingCubeController.OnStack += IncreaseScore;
-        MovingCubeController.OnPerfectStack += () => PerfectStacksCount += 1;
-        MovingCubeController.OnSlice += () => PerfectStacksCount = 0;
-            
-        MovingCubeController.OnMiss += OnRestart;
+        MovingCubeController.OnPerfectStack += IncreasePerfectStackCount;
+        MovingCubeController.OnSlice += ResetPerfectStackCount; 
+        //OnMiss += OnRestart;
     }
 
     private void OnDisable()
     {
         MovingCubeController.OnStack -= IncreaseScore;
-        MovingCubeController.OnPerfectStack -= () => PerfectStacksCount += 1;
-        MovingCubeController.OnSlice -= () => PerfectStacksCount = 0;
-        
-        MovingCubeController.OnMiss -= OnRestart;
+        MovingCubeController.OnPerfectStack -= IncreasePerfectStackCount;
+        MovingCubeController.OnSlice -= ResetPerfectStackCount;
+        //OnMiss -= OnRestart;
     }
 
     public void StartGame()
@@ -76,6 +67,9 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
+        Scores = 0;
+        PerfectStacksCount = 0;
+        
         TryToClearAllCubes();
         OnRestart.Invoke();
     }
@@ -86,6 +80,15 @@ public class GameManager : MonoBehaviour
         OnScoreIncreased.Invoke();
     }
 
+    private void IncreasePerfectStackCount()
+    {
+        PerfectStacksCount += 1;
+    }
+
+    private void ResetPerfectStackCount()
+    {
+        PerfectStacksCount = 0;
+    }
     private void SetResolutionAndFrameRate()
     {
         Resolution[] resolutions = Screen.resolutions;

@@ -1,5 +1,4 @@
 using System;
-using DefaultNamespace;
 using Enums;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,7 +26,6 @@ namespace Controllers
         public static Action OnStack;
         public static Action OnPerfectStack;
         public static Action OnSlice;
-        public static Action OnMiss;
 
         private MoveDirection _moveDirection = MoveDirection.Z;
     
@@ -258,7 +256,7 @@ namespace Controllers
 
         private void Miss()
         {
-            OnMiss.Invoke();
+            GameManager.OnMiss.Invoke();
             _rigidbody.isKinematic = false;
             isCanMove = false;
         }

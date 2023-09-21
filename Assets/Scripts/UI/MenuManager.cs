@@ -9,12 +9,12 @@ public class MenuManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStart += () => SetActiveButton(startButton, true);
-        GameManager.OnRestart += () => SetActiveButton(restartButton, true);
+        GameManager.OnMiss += () => SetActiveButton(restartButton, true); //was OnRestart
     }
     private void OnDisable()
     {
         GameManager.OnStart -= () => SetActiveButton(startButton, true);
-        GameManager.OnRestart -= () => SetActiveButton(restartButton, true);
+        GameManager.OnMiss -= () => SetActiveButton(restartButton, true); //was OnRestart
     }
 
     private void SetActiveButton(Button button, bool state)
