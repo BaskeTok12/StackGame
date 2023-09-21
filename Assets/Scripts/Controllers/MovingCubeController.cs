@@ -114,7 +114,8 @@ namespace Controllers
             else
                 transform.position += -transform.right * Time.deltaTime * moveSpeed;
         }
-        internal void Stop()
+
+        private void Stop()
         {
             if (isCanMove)
             {

@@ -52,7 +52,8 @@ public class CameraManager : MonoBehaviour
 
     private void ResetCamera()
     {
-        _camera.transform.position = startPosition;
+        transform.DOMoveY(startPosition.y, changesDuration);
+        //_camera.transform.position = startPosition;
         SetCameraSize(InGameCameraSise);
     }
     private void SetCameraSize(float size)
