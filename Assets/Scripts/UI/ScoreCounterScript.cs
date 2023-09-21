@@ -11,13 +11,14 @@ public class ScoreCounterScript : MonoBehaviour
 
     private void OnEnable()
     {
-       
+        GameManager.OnScoreIncreased += UpdateScore;
+        GameManager.OnRestart += UpdateScore;
     }
 
     private void OnDisable()
     {
-        
-        
+        GameManager.OnScoreIncreased -= UpdateScore;
+        GameManager.OnRestart -= UpdateScore;
     }
 
     private void UpdateScore()

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Controllers;
 using UnityEngine;
 using Zenject;
@@ -12,14 +14,15 @@ public class GameManager : MonoBehaviour
     public static Action OnClick;
     
     public static Action OnRestart;
-    
 
+    public static Action OnScoreIncreased;
+    
     private SoundManager _soundManager;
 
     private bool _isAfterLoading;
     private int _perfectStackCounter;
 
-    private const float CubesDeletingDuration = 1f;
+    private const float CubesDeletingDuration = 0.5f;
 
     [Header("Start Cube")]
     [SerializeField] private MeshRenderer startCubeMaterial;
@@ -50,16 +53,20 @@ public class GameManager : MonoBehaviour
 
     private void OnEnable()
     {
-        MovingCubeController.OnStack += () => Scores += 1;
+        MovingCubeController.OnStack += IncreaseScore;
         MovingCubeController.OnPerfectStack += () => PerfectStacksCount += 1;
         MovingCubeController.OnSlice += () => PerfectStacksCount = 0;
+            
+        MovingCubeController.OnMiss += OnRestart;
     }
 
     private void OnDisable()
     {
-        MovingCubeController.OnStack -= () => Scores += 1;
+        MovingCubeController.OnStack -= IncreaseScore;
         MovingCubeController.OnPerfectStack -= () => PerfectStacksCount += 1;
         MovingCubeController.OnSlice -= () => PerfectStacksCount = 0;
+        
+        MovingCubeController.OnMiss -= OnRestart;
     }
 
     public void StartGame()
@@ -69,37 +76,47 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        StartCoroutine(
-            ClearAllCubesCoroutine());
+        TryToClearAllCubes();
         OnRestart.Invoke();
     }
 
     private void IncreaseScore()
     {
         Scores += 1;
-        
+        OnScoreIncreased.Invoke();
     }
 
     private void SetResolutionAndFrameRate()
     {
         Resolution[] resolutions = Screen.resolutions;
-        Application.targetFrameRate = resolutions.Last().refreshRate;
+        Application.targetFrameRate = (int)resolutions.Last().refreshRateRatio.value;
         QualitySettings.vSyncCount = 0;
     }
 
-    private IEnumerator ClearAllCubesCoroutine()
+    private async Task ClearAllCubesCoroutine()
+    {
+        var cubesCount = placedBlocks.transform.childCount;
+        float latency = CubesDeletingDuration / cubesCount;
+        
+        for (int i = cubesCount - 1; i >= 0; i--)
+        {
+            DestroyCube(i);
+            await Task.Delay(TimeSpan.FromSeconds(latency));
+        }
+    }
+
+    private async void TryToClearAllCubes()
     {
         if (placedBlocks.transform.childCount > 0)
         {
-            var cubesCount = placedBlocks.transform.childCount;
-            float latency = CubesDeletingDuration / cubesCount;
-            for (int i = cubesCount - 1; i >= 0; i--)
-            {
-                Transform cube = placedBlocks.transform.GetChild(i);
-                Destroy(cube.gameObject);
-                yield return new WaitForSeconds(latency);
-            }
+            await ClearAllCubesCoroutine();
         }
+    }
+
+    private void DestroyCube(int i)
+    {
+        Transform cube = placedBlocks.transform.GetChild(i);
+        Destroy(cube.gameObject);
     }
 }
 

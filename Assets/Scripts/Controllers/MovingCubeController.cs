@@ -27,7 +27,8 @@ namespace Controllers
         public static Action OnStack;
         public static Action OnPerfectStack;
         public static Action OnSlice;
-        
+        public static Action OnMiss;
+
         private MoveDirection _moveDirection = MoveDirection.Z;
     
         private MoveDestination _moveDestination = MoveDestination.Forward;
@@ -219,6 +220,7 @@ namespace Controllers
 
         private void CreateFallingCube(float position, float fallingBlockSize)
         {
+            OnSlice.Invoke();
             var newCube = CreateNewCube();
 
             if (_moveDirection == MoveDirection.Z)
@@ -256,9 +258,9 @@ namespace Controllers
 
         private void Miss()
         {
+            OnMiss.Invoke();
             _rigidbody.isKinematic = false;
             isCanMove = false;
-            OnSlice.Invoke();
         }
 
         private void ModifyMoveDirection()
