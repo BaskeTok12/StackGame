@@ -284,7 +284,6 @@ namespace Controllers
             moveSpeed = 10f;
             transform.position = spawner.GetDefaultPosition();
             lastCubeTransform = _startBlock;
-            
         }
     }
 }
