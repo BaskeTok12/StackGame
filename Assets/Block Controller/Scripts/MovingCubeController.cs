@@ -35,7 +35,10 @@ namespace Controllers
 
         private Vector3 _startPosition;
         private const float MoveBackDistance = 10f;
-    
+
+        public static event Action OnMiss;
+  
+            
         private void Awake()
         {
             GetComponents();
@@ -257,7 +260,7 @@ namespace Controllers
 
         private void Miss()
         {
-            GameManager.OnMiss.Invoke();
+            OnMiss?.Invoke();
             _rigidbody.isKinematic = false;
             isCanMove = false;
         }

@@ -1,4 +1,5 @@
 using System.Collections;
+using Controllers;
 using TMPro;
 using UnityEngine;
 
@@ -28,13 +29,13 @@ namespace UI.Scripts
         {
             //CameraManager.OnCameraReset += () => { startGamePanel.SetActive(true); fadingManager.SetFadingText(tapToPlayText, tweenDuration); };
             GameManager.OnRestart += () => fadingManager.ShowPanel(startGamePanel, tweenDuration);
-            GameManager.OnMiss += () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+            MovingCubeController.OnMiss += () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
         }
         private void OnDisable()
         {
             //CameraManager.OnCameraReset -= () => { startGamePanel.SetActive(true); fadingManager.SetFadingText(tapToPlayText, tweenDuration); };
             GameManager.OnRestart -= () => fadingManager.ShowPanel(startGamePanel, tweenDuration);
-            GameManager.OnMiss -= () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+            MovingCubeController.OnMiss -= () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
         }
 
         public void StartGame()

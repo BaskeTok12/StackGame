@@ -1,41 +1,43 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI.Scripts
 {
     public class FadingManager : MonoBehaviour
     {
+        [FormerlySerializedAs("canvasGroup")]
         [Header("Main UI Element")]
-        [SerializeField] private CanvasGroup canvasGroup;
+        [SerializeField] private CanvasGroup panelsCanvasGroup;
 
-        private Tween fadingTextTween;
+        private Tween _fadingTextTween;
        
-        public void HidePanel(GameObject panel, float tweenDuration)
+        public void HidePanel(GameObject panel, float duration)
         {
-            canvasGroup.DOFade(0f, tweenDuration).OnComplete(() => DeactivatePanel(panel));
+            panelsCanvasGroup.DOFade(0f, duration).OnComplete(() => DeactivatePanel(panel));
         }
         
-        public void ShowPanel(GameObject panel, float tweenDuration)
+        public void ShowPanel(GameObject panel, float duration)
         {
-            canvasGroup.DOFade(1f, tweenDuration).OnComplete(() => ActivatePanel(panel));
+            panelsCanvasGroup.DOFade(1f, duration).OnComplete(() => ActivatePanel(panel));
         }
         
-        public void SetFadingText(TextMeshProUGUI text, float tweenDuration)
+        public void SetFadingText(TextMeshProUGUI text, float duration)
         {
-            fadingTextTween = text.DOFade(0.0f, tweenDuration).SetEase(Ease.InSine).SetLoops(-1, LoopType.Yoyo);
+            _fadingTextTween = text.DOFade(0.0f, duration).SetEase(Ease.InSine).SetLoops(-1, LoopType.Yoyo);
         }
 
         private void DeactivatePanel(GameObject panel)
         {
             panel.SetActive(false);
-            fadingTextTween.Pause();
+            _fadingTextTween.Pause();
         }
         
         private void ActivatePanel(GameObject panel)
         {
             panel.SetActive(true);
-            fadingTextTween.Play();
+            _fadingTextTween.Play();
         }
     }
 }

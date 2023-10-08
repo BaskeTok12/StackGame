@@ -25,7 +25,7 @@ public class CameraManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStart += () => SetCameraSize(InGameCameraSise);
-        GameManager.OnMiss += () => SetCameraSize(MissCameraSise); 
+        MovingCubeController.OnMiss += () => SetCameraSize(MissCameraSise); 
         GameManager.OnRestart += ResetCamera;
         
         MovingCubeController.OnStack += RaiseCameraPosition;
@@ -34,7 +34,7 @@ public class CameraManager : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnStart -= () => SetCameraSize(InGameCameraSise);
-        GameManager.OnMiss -= () => SetCameraSize(MissCameraSise); 
+        MovingCubeController.OnMiss -= () => SetCameraSize(MissCameraSise); 
         GameManager.OnRestart -= ResetCamera;
         
         MovingCubeController.OnStack -= RaiseCameraPosition;
