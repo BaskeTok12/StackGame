@@ -1,56 +1,73 @@
-using System;
-using DG.Tweening;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class MenuManager : MonoBehaviour
+namespace UI.Scripts
 {
-    [Header("Panels")]
-    [SerializeField] private GameObject startGamePanel;
-    [SerializeField] private GameObject finalGamePanel;
-
-    [SerializeField] private TextMeshProUGUI tapToPlayText;
-    
-    [SerializeField] private float tweenDuration;
-
-    private Action _onFadeInEnded;
-    private Action _onFadeOutEnded;
-
-    private Sequence _tweenSequence;
-
-    private void Awake()
+    public class MenuManager : MonoBehaviour
     {
-        AppendTweensToSequence();
-    }
+        [SerializeField] private GameManager gameManager;
 
-    private void OnEnable()
-    {
-        CameraManager.OnCameraReset += () => { startGamePanel.SetActive(true); StartTweensSequence(); };
-        GameManager.OnMiss += () => finalGamePanel.SetActive(true);
-    }
-    private void OnDisable()
-    {
-        CameraManager.OnCameraReset -= () => { startGamePanel.SetActive(true); StartTweensSequence(); };
-        GameManager.OnMiss -= () => finalGamePanel.SetActive(true);
-    }
+        [Header("Panels")]
+        [SerializeField] private GameObject startGamePanel;
+        [SerializeField] private GameObject finalGamePanel;
 
-    private void AppendTweensToSequence()
-    {
-        _tweenSequence = DOTween.Sequence();
+        [Header("UI Text")]
+        [SerializeField] private TextMeshProUGUI tapToPlayText;
         
-        _tweenSequence.Append(tapToPlayText.DOFade(0, tweenDuration));
-        _tweenSequence.Append(tapToPlayText.DOFade(1, tweenDuration));
+        [Header("Fading")]
+        [SerializeField] private FadingManager fadingManager;
+        [SerializeField] private float tweenDuration;
+        [SerializeField] private float restartLatency;
 
-        _tweenSequence.SetLoops(-1);
-    }
+        private void Awake()
+        {
+            fadingManager.SetFadingText(tapToPlayText, tweenDuration);
+        }
+        private void OnEnable()
+        {
+            //CameraManager.OnCameraReset += () => { startGamePanel.SetActive(true); fadingManager.SetFadingText(tapToPlayText, tweenDuration); };
+            GameManager.OnRestart += () => fadingManager.ShowPanel(startGamePanel, tweenDuration);
+            GameManager.OnMiss += () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+        }
+        private void OnDisable()
+        {
+            //CameraManager.OnCameraReset -= () => { startGamePanel.SetActive(true); fadingManager.SetFadingText(tapToPlayText, tweenDuration); };
+            GameManager.OnRestart -= () => fadingManager.ShowPanel(startGamePanel, tweenDuration);
+            GameManager.OnMiss -= () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+        }
 
-    private void StartTweensSequence()
-    {
-        _tweenSequence?.Play();
-    }
+        public void StartGame()
+        {
+            StartCoroutine(FadeToPlaymode());
+        }
+        
+        public void RestartGame()
+        {
+            StartCoroutine(FadeToRestart());
+        }
 
-    private void StopTweensSequence()
-    {
-        _tweenSequence?.Kill();
+        private IEnumerator FadeToPlaymode()
+        {
+            fadingManager.HidePanel(startGamePanel, tweenDuration);
+
+            yield return new WaitForSeconds(tweenDuration);
+            
+            gameManager.StartGame();
+        }
+        
+        private IEnumerator FadeToRestart()
+        {
+            fadingManager.HidePanel(finalGamePanel, restartLatency);
+
+            yield return new WaitForSeconds(restartLatency);
+            
+            gameManager.RestartGame();
+            
+            yield return new WaitForSeconds(restartLatency);
+            
+            
+            
+        }
     }
 }

@@ -42,9 +42,7 @@ public class GameManager : MonoBehaviour
     public int Scores { private set; get; }
     public int BestScore { private set; get; }
     public int PerfectStacksCount { private set; get; }
-    
-    
-    
+
     [Inject]
     private void Construct(InputManager inputManager)
     {
@@ -171,7 +169,5 @@ public class GameManager : MonoBehaviour
         Application.targetFrameRate = (int)resolutions.Last().refreshRateRatio.value;
         QualitySettings.vSyncCount = 0;
     }
-
-    
 }
 
