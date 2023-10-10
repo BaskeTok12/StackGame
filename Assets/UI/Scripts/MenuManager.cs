@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using Controllers;
+using Game_Manager;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace UI.Scripts
 {
@@ -12,6 +15,10 @@ namespace UI.Scripts
         [Header("Panels")]
         [SerializeField] private GameObject startGamePanel;
         [SerializeField] private GameObject finalGamePanel;
+        [SerializeField] private GameObject scoreObject;
+        [SerializeField] private GameObject bestScoreObject;
+
+        [SerializeField] private GameObject settingsPanel;
 
         [Header("UI Text")]
         [SerializeField] private TextMeshProUGUI tapToPlayText;
@@ -20,6 +27,9 @@ namespace UI.Scripts
         [SerializeField] private FadingManager fadingManager;
         [SerializeField] private float tweenDuration;
         [SerializeField] private float restartLatency;
+        [SerializeField] private float uiTransitionsLatency;
+
+        public static event Action OnButtonClick;
 
         private void Awake()
         {
@@ -27,15 +37,14 @@ namespace UI.Scripts
         }
         private void OnEnable()
         {
-            //CameraManager.OnCameraReset += () => { startGamePanel.SetActive(true); fadingManager.SetFadingText(tapToPlayText, tweenDuration); };
-            GameManager.OnRestart += () => fadingManager.ShowPanel(startGamePanel, tweenDuration);
-            MovingCubeController.OnMiss += () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+            GameManager.OnRestart += ShowStartPanel;
+            CubeController.OnMiss += ShowFinalPanel;
         }
+        
         private void OnDisable()
         {
-            //CameraManager.OnCameraReset -= () => { startGamePanel.SetActive(true); fadingManager.SetFadingText(tapToPlayText, tweenDuration); };
-            GameManager.OnRestart -= () => fadingManager.ShowPanel(startGamePanel, tweenDuration);
-            MovingCubeController.OnMiss -= () => fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+            GameManager.OnRestart -= ShowStartPanel;
+            CubeController.OnMiss -= ShowFinalPanel;
         }
 
         public void StartGame()
@@ -48,6 +57,28 @@ namespace UI.Scripts
             StartCoroutine(FadeToRestart());
         }
 
+        private void ShowStartPanel()
+        {
+            fadingManager.ShowPanel(startGamePanel, tweenDuration);
+        }
+
+        private void ShowFinalPanel()
+        {
+            fadingManager.ShowPanel(finalGamePanel, tweenDuration);
+        }
+
+        public void ShowSettings()
+        {
+            fadingManager.ShowPanel(settingsPanel, uiTransitionsLatency);
+            OnButtonClick?.Invoke();
+        }
+        
+        public void CLoseSettings()
+        {
+            fadingManager.HidePanel(settingsPanel, uiTransitionsLatency);
+            OnButtonClick?.Invoke();
+        }
+        
         private IEnumerator FadeToPlaymode()
         {
             fadingManager.HidePanel(startGamePanel, tweenDuration);
@@ -55,6 +86,7 @@ namespace UI.Scripts
             yield return new WaitForSeconds(tweenDuration);
             
             gameManager.StartGame();
+            fadingManager.ShowPanel(scoreObject, tweenDuration);
         }
         
         private IEnumerator FadeToRestart()
@@ -64,10 +96,8 @@ namespace UI.Scripts
             yield return new WaitForSeconds(restartLatency);
             
             gameManager.RestartGame();
-            
+            fadingManager.HidePanel(scoreObject, restartLatency);
             yield return new WaitForSeconds(restartLatency);
-            
-            
             
         }
     }

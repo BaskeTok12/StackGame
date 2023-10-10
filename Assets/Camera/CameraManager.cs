@@ -1,7 +1,9 @@
 using System;
 using Controllers;
 using DG.Tweening;
+using Game_Manager;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraManager : MonoBehaviour
 {
@@ -14,7 +16,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] private float InGameCameraSise = 6f; //const
     
     [SerializeField] private float changesDuration;
-    [SerializeField] private MovingCubeController movingCubeController;
+    [FormerlySerializedAs("movingCubeController")] [SerializeField] private CubeController cubeController;
     [SerializeField] private MeshRenderer fogMaterial;
     private void Awake()
     {
@@ -25,24 +27,24 @@ public class CameraManager : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnStart += () => SetCameraSize(InGameCameraSise);
-        MovingCubeController.OnMiss += () => SetCameraSize(MissCameraSise); 
+        CubeController.OnMiss += () => SetCameraSize(MissCameraSise); 
         GameManager.OnRestart += ResetCamera;
         
-        MovingCubeController.OnStack += RaiseCameraPosition;
+        CubeController.OnBlockPlaced += RaiseCameraPosition;
     }
 
     private void OnDisable()
     {
         GameManager.OnStart -= () => SetCameraSize(InGameCameraSise);
-        MovingCubeController.OnMiss -= () => SetCameraSize(MissCameraSise); 
+        CubeController.OnMiss -= () => SetCameraSize(MissCameraSise); 
         GameManager.OnRestart -= ResetCamera;
         
-        MovingCubeController.OnStack -= RaiseCameraPosition;
+        CubeController.OnBlockPlaced -= RaiseCameraPosition;
     }
 
     private void RaiseCameraPosition()
     {
-        transform.DOMoveY(transform.position.y + movingCubeController.transform.localScale.y, changesDuration);
+        transform.DOMoveY(transform.position.y + cubeController.transform.localScale.y, changesDuration);
     }
 
     private void ResetCamera()

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Controllers;
 using DG.Tweening;
 using Enums;
+using Game_Manager;
 using UnityEngine;
 
 public class CubeSpawner : MonoBehaviour
@@ -47,8 +48,8 @@ public class CubeSpawner : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(zSpawnerPosition.position , MovingCubeController.DefaultScale);
-        Gizmos.DrawWireCube(xSpawnerPosition.position , MovingCubeController.DefaultScale);
+        Gizmos.DrawWireCube(zSpawnerPosition.position , CubeController.DefaultScale);
+        Gizmos.DrawWireCube(xSpawnerPosition.position , CubeController.DefaultScale);
     }
     
     #region WorkWithCube

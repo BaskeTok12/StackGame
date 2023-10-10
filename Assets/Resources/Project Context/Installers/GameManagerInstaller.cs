@@ -1,3 +1,4 @@
+using Game_Manager;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;

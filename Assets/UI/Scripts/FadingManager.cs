@@ -7,7 +7,6 @@ namespace UI.Scripts
 {
     public class FadingManager : MonoBehaviour
     {
-        [FormerlySerializedAs("canvasGroup")]
         [Header("Main UI Element")]
         [SerializeField] private CanvasGroup panelsCanvasGroup;
 

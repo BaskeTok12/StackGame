@@ -46,8 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startCubeMaterial: {fileID: 0}
   startTowerMaterial: {fileID: 0}
-  placedBlocks: {fileID: 0}
-  fallingBlocks: {fileID: 0}
   fogMaterial: {fileID: 0}
   mainCamera: {fileID: 0}
-  throwingDistance: 0
