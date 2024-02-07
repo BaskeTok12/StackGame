@@ -1596,21 +1596,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameManager: {fileID: 234329490}
-  fadingManager: {fileID: 783998209}
   scoreText: {fileID: 349539316}
   bestScoreText: {fileID: 1897754060}
-  tweenDuration: 5
---- !u!114 &914887796 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6143918400197970038, guid: 6651c235cc59cb94fb6d50598eb91c37, type: 3}
-  m_PrefabInstance: {fileID: 1849603040}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd6b32ca5c824014a9a7d7e11c2cfc0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &930823228
 GameObject:
   m_ObjectHideFlags: 0
@@ -1785,11 +1772,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d856ffdf4db38d498afe34dd4be7788, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MissCameraSise: 15
-  InGameCameraSise: 10
+  missCameraSize: 10
+  inGameCameraSize: 6
   changesDuration: 0.5
   cubeController: {fileID: 128082654}
-  fogMaterial: {fileID: 0}
 --- !u!114 &963194232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7260,8 +7246,8 @@ RectTransform:
   m_GameObject: {fileID: 1587859293}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1343476476}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7787,6 +7773,7 @@ GameObject:
   - component: {fileID: 2018904889}
   - component: {fileID: 2018904891}
   - component: {fileID: 2018904890}
+  - component: {fileID: 2018904892}
   m_Layer: 5
   m_Name: VolumeToggle
   m_TagString: Untagged
@@ -7875,20 +7862,21 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 914887796}
-        m_TargetAssemblyTypeName: SFX.Scripts.SoundManager, Assembly-CSharp
-        m_MethodName: ToggleMasterVolume
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_IsOn: 1
+--- !u!114 &2018904892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2018904888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf86bea0aee5f084bae1fd957bb757a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMixer: {fileID: 24100000, guid: 634fd239245d84e468d5ad65a3f235b8, type: 2}
 --- !u!1 &2032715565
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,6 @@ namespace SFX.Scripts
     {
         [SerializeField] private GameManager gameManager;
         
-        [Header("Mixer")] 
-        [SerializeField] private AudioMixerGroup mainMixer;
-        
         [Header("Sources")]
         [SerializeField] private AudioSource musicSource;
         [SerializeField] private AudioSource vfxSource;
@@ -25,9 +22,6 @@ namespace SFX.Scripts
         [SerializeField] private AudioClip endingSound;
         [SerializeField] private AudioClip[] perfectStackSounds;
         
-        private bool _isEnabled;
-        private const string MasterVolume = "MasterVolume";
-        
         private void Start()
         {
             musicSource.PlayOneShot(startSound);
@@ -37,10 +31,8 @@ namespace SFX.Scripts
         {
             GameManager.OnStart += PlayBeginningSound;
             GameManager.OnRestart += PlayEndingSound;
-
             CubeController.OnStack += PlayStackSound;
             CubeController.OnPerfectStack += PlayPerfectStackSound;
-            
             MenuManager.OnButtonClick += PlayButtonSound;
         }
 
@@ -48,10 +40,8 @@ namespace SFX.Scripts
         {
             GameManager.OnStart -= PlayBeginningSound;
             GameManager.OnRestart -= PlayEndingSound;
-            
             CubeController.OnStack -= PlayStackSound;
             CubeController.OnPerfectStack -= PlayPerfectStackSound;
-            
             MenuManager.OnButtonClick -= PlayButtonSound;
         }
 
@@ -83,14 +73,6 @@ namespace SFX.Scripts
         private void PlayButtonSound()
         {
             vfxSource.PlayOneShot(uiButtonSound);
-        }
-        
-        public void ToggleMasterVolume()
-        {
-            if (_isEnabled)
-                mainMixer.audioMixer.SetFloat(MasterVolume, -80);
-            else
-                mainMixer.audioMixer.SetFloat(MasterVolume, 0);
         }
     }
 }
