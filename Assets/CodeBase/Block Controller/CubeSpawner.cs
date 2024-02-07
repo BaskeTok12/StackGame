@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
+using CodeBase.Block_Controller.Enums;
+using CodeBase.Game_Manager;
 using DG.Tweening;
-using Enums;
-using Game_Manager;
 using UnityEngine;
 
-namespace Block_Controller.Scripts
+namespace CodeBase.Block_Controller
 {
     public class CubeSpawner : MonoBehaviour
     {

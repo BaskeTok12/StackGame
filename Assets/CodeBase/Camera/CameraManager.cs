@@ -1,11 +1,10 @@
 using System;
-using Block_Controller.Scripts;
+using CodeBase.Block_Controller;
+using CodeBase.Game_Manager;
 using DG.Tweening;
-using Game_Manager;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-namespace Camera
+namespace CodeBase.Camera
 {
     public class CameraManager : MonoBehaviour
     {

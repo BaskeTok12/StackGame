@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
-using Block_Controller.Scripts;
-using Game_Manager;
+using CodeBase.Block_Controller;
+using CodeBase.Game_Manager;
 using TMPro;
 using UnityEngine;
 

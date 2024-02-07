@@ -1,13 +1,14 @@
 using System;
 using System.Linq;
-using Block_Controller.Scripts;
-using Camera;
-using Input_Manager;
+using CodeBase.Block_Controller;
+using CodeBase.Camera;
+using CodeBase.Input_Manager;
+using Global_Materials.Scripts;
 using SFX.Scripts;
 using UnityEngine;
 using Zenject;
 
-namespace Game_Manager
+namespace CodeBase.Game_Manager
 {
     public class GameManager : MonoBehaviour
     {

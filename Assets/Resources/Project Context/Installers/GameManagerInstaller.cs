@@ -1,14 +1,16 @@
-using Game_Manager;
+using CodeBase.Game_Manager;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
-public class GameManagerInstaller : MonoInstaller
+namespace Resources.Project_Context.Installers
 {
-    [SerializeField] private GameManager gameManager;
-    public override void InstallBindings()
+    public class GameManagerInstaller : MonoInstaller
     {
-        Container.Bind<GameManager>().FromInstance(gameManager).AsSingle().NonLazy();
-        Container.QueueForInject(gameManager);
+        [SerializeField] private GameManager gameManager;
+        public override void InstallBindings()
+        {
+            Container.Bind<GameManager>().FromInstance(gameManager).AsSingle().NonLazy();
+            Container.QueueForInject(gameManager);
+        }
     }
 }

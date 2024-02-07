@@ -3,13 +3,16 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
 
-public class SoundManagerInstaller : MonoInstaller
+namespace Resources.Project_Context.Installers
 {
-    [FormerlySerializedAs("_soundManager")] [SerializeField] private SoundManager soundManager;
-    public override void InstallBindings()
+    public class SoundManagerInstaller : MonoInstaller
     {
-        var soundManagerInstance = Container.InstantiatePrefabForComponent<SoundManager>(soundManager);
-        Container.Bind<SoundManager>().FromInstance(soundManagerInstance).AsSingle().NonLazy();
-        Container.QueueForInject(soundManager);
+        [FormerlySerializedAs("_soundManager")] [SerializeField] private SoundManager soundManager;
+        public override void InstallBindings()
+        {
+            var soundManagerInstance = Container.InstantiatePrefabForComponent<SoundManager>(soundManager);
+            Container.Bind<SoundManager>().FromInstance(soundManagerInstance).AsSingle().NonLazy();
+            Container.QueueForInject(soundManager);
+        }
     }
 }

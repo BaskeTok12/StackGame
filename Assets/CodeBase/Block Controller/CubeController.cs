@@ -1,10 +1,11 @@
 using System;
-using Enums;
-using Game_Manager;
+using CodeBase.Block_Controller.Enums;
+using CodeBase.Game_Manager;
 using Unity.VisualScripting;
 using UnityEngine;
+using Zenject;
 
-namespace Block_Controller.Scripts
+namespace CodeBase.Block_Controller
 {
     public class CubeController : MonoBehaviour
     {
@@ -16,6 +17,7 @@ namespace Block_Controller.Scripts
         [SerializeField] private float maxSpeed;
         [SerializeField] private float perfectHangoverDeviation = 0.002f;
         [SerializeField] private bool isCanMove = true;
+        [SerializeField] private Gradient colorGradient;
         
         public static readonly Vector3 DefaultScale = new Vector3(5, 0.5f, 5);
         
@@ -35,8 +37,15 @@ namespace Block_Controller.Scripts
         private Transform _startBlock;
         private Rigidbody _rigidbody;
         private MeshRenderer _renderer;
+        private GameManager _gameManager;
 
         public static event Action OnMiss;
+
+        [Inject]
+        private void Constructor(GameManager gameManager)
+        {
+            _gameManager = gameManager;
+        }
         
         private void Awake()
         {
@@ -44,6 +53,7 @@ namespace Block_Controller.Scripts
             _startBlock = lastCubeTransform;
             _currentMoveSpeed = moveSpeed;
         }
+        
         private void OnEnable()
         {
             GameManager.OnStart += () => isCanMove = true;
@@ -65,6 +75,7 @@ namespace Block_Controller.Scripts
                 Move();
             }
         }
+        
         private void Move()
         {
             var distanceToSpawner = CalculateDistanceToSpawner();
@@ -250,6 +261,7 @@ namespace Block_Controller.Scripts
                 deployPosition.z);
             isCanMove = true;
         }
+        
         private GameObject CreateNewCube()
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);

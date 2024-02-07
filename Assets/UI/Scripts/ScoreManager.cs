@@ -1,4 +1,4 @@
-using Game_Manager;
+using CodeBase.Game_Manager;
 using TMPro;
 using UnityEngine;
 

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Input_Manager
+namespace CodeBase.Input_Manager
 {
     public class InputManager : MonoBehaviour
     {
