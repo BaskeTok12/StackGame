@@ -1,9 +1,8 @@
-using Controllers;
+using Block_Controller.Scripts;
 using Game_Manager;
+using UI.Scripts;
 using UnityEngine;
 using UnityEngine.Audio;
-using UnityEngine.Serialization;
-using Zenject;
 
 namespace SFX.Scripts
 {
@@ -20,13 +19,15 @@ namespace SFX.Scripts
         
         [Header("Sounds")] 
         [SerializeField] private AudioClip uiButtonSound;
-        [SerializeField] private AudioClip startSound;
+        [SerializeField] private AudioClip startSound; 
         [SerializeField] private AudioClip stackSound;
         [SerializeField] private AudioClip beginningSound;
         [SerializeField] private AudioClip endingSound;
         [SerializeField] private AudioClip[] perfectStackSounds;
-
+        
+        private bool _isEnabled;
         private const string MasterVolume = "MasterVolume";
+        
         private void Start()
         {
             musicSource.PlayOneShot(startSound);
@@ -36,9 +37,11 @@ namespace SFX.Scripts
         {
             GameManager.OnStart += PlayBeginningSound;
             GameManager.OnRestart += PlayEndingSound;
-            
+
             CubeController.OnStack += PlayStackSound;
             CubeController.OnPerfectStack += PlayPerfectStackSound;
+            
+            MenuManager.OnButtonClick += PlayButtonSound;
         }
 
         private void OnDisable()
@@ -48,6 +51,8 @@ namespace SFX.Scripts
             
             CubeController.OnStack -= PlayStackSound;
             CubeController.OnPerfectStack -= PlayPerfectStackSound;
+            
+            MenuManager.OnButtonClick -= PlayButtonSound;
         }
 
         private void PlayStackSound()
@@ -80,12 +85,12 @@ namespace SFX.Scripts
             vfxSource.PlayOneShot(uiButtonSound);
         }
         
-        public void ToggleMasterVolume(bool isEnabled)
+        public void ToggleMasterVolume()
         {
-            if (isEnabled)
-                mainMixer.audioMixer.SetFloat(MasterVolume, 0);
-            else
+            if (_isEnabled)
                 mainMixer.audioMixer.SetFloat(MasterVolume, -80);
+            else
+                mainMixer.audioMixer.SetFloat(MasterVolume, 0);
         }
     }
 }

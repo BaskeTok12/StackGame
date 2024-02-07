@@ -1,10 +1,11 @@
+using Input_Manager;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
 
 public class InputManagerInstaller : MonoInstaller
 {
-    [FormerlySerializedAs("_inputManager")] [SerializeField] private InputManager inputManager;
+    [SerializeField] private InputManager inputManager;
     public override void InstallBindings()
     {
         var inputManagerInstance = Container.InstantiatePrefabForComponent<InputManager>(inputManager);

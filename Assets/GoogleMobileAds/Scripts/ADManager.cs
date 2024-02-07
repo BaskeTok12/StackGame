@@ -1,5 +1,5 @@
 using System;
-using Controllers;
+using Block_Controller.Scripts;
 using UnityEngine;
 using GoogleMobileAds.Api;
 using UnityEngine.Serialization;
@@ -34,6 +34,7 @@ public class ADManager : MonoBehaviour
         if (_missesCount >= missesToAddLimit)
         {
             interstitialAd.ShowInterstitialAdd();
+            _missesCount = 0;
         }
     }
 }

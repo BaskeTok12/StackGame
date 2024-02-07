@@ -11,17 +11,17 @@ namespace UI.Scripts
         [SerializeField] private CanvasGroup panelsCanvasGroup;
 
         private Tween _fadingTextTween;
-       
-        public void HidePanel(GameObject panel, float duration)
-        {
-            panelsCanvasGroup.DOFade(0f, duration).OnComplete(() => DeactivatePanel(panel));
-        }
         
         public void ShowPanel(GameObject panel, float duration)
         {
             panelsCanvasGroup.DOFade(1f, duration).OnComplete(() => ActivatePanel(panel));
         }
-        
+       
+        public void HidePanel(GameObject panel, float duration)
+        {
+            panelsCanvasGroup.DOFade(0f, duration).OnComplete(() => DeactivatePanel(panel));
+        }
+
         public void SetFadingText(TextMeshProUGUI text, float duration)
         {
             _fadingTextTween = text.DOFade(0.0f, duration).SetEase(Ease.InSine).SetLoops(-1, LoopType.Yoyo);

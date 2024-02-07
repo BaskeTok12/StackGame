@@ -8,18 +8,14 @@ namespace UI.Scripts
     {
         [Header("References")]
         [SerializeField] private GameManager gameManager;
-        [SerializeField] private FadingManager fadingManager;
     
         [Header("Text")]
         [SerializeField] private TextMeshProUGUI scoreText;
         [SerializeField] private TextMeshProUGUI bestScoreText;
-    
-        [Header("Tween duration")] 
-        [SerializeField] private float tweenDuration;
+        
         private void OnEnable()
         {
             GameManager.OnScoreIncreased += UpdateScore;
-
             GameManager.OnRestart += ResetScore;
             GameManager.OnBestScoreIncreased += UpdateBestScore;
         }
@@ -27,7 +23,6 @@ namespace UI.Scripts
         private void OnDisable()
         {
             GameManager.OnScoreIncreased -= UpdateScore;
-
             GameManager.OnRestart -= ResetScore;
             GameManager.OnBestScoreIncreased -= UpdateBestScore;
         }

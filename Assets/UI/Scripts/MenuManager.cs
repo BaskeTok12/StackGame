@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
-using Controllers;
+using Block_Controller.Scripts;
 using Game_Manager;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace UI.Scripts
 {
@@ -18,7 +17,9 @@ namespace UI.Scripts
         [SerializeField] private GameObject scoreObject;
         [SerializeField] private GameObject bestScoreObject;
 
+        [Header("Settings")]
         [SerializeField] private GameObject settingsPanel;
+        [SerializeField] private TwoPointTransition settingPointTransitions;
 
         [Header("UI Text")]
         [SerializeField] private TextMeshProUGUI tapToPlayText;
@@ -37,16 +38,26 @@ namespace UI.Scripts
         }
         private void OnEnable()
         {
-            GameManager.OnRestart += ShowStartPanel;
-            CubeController.OnMiss += ShowFinalPanel;
+            GameManager.OnRestart += GameManager_OnRestart;
+            CubeController.OnMiss += CubeController_OnMiss;
         }
         
         private void OnDisable()
         {
-            GameManager.OnRestart -= ShowStartPanel;
-            CubeController.OnMiss -= ShowFinalPanel;
+            GameManager.OnRestart -= GameManager_OnRestart;
+            CubeController.OnMiss -= CubeController_OnMiss;
         }
-
+        
+        private void GameManager_OnRestart()
+        {
+            ShowStartPanel();
+        }
+        
+        private void CubeController_OnMiss()
+        {
+            ShowFinalPanel();
+        }
+        
         public void StartGame()
         {
             StartCoroutine(FadeToPlaymode());
@@ -69,13 +80,13 @@ namespace UI.Scripts
 
         public void ShowSettings()
         {
-            fadingManager.ShowPanel(settingsPanel, uiTransitionsLatency);
+            settingPointTransitions.ToTransition();
             OnButtonClick?.Invoke();
         }
         
         public void CLoseSettings()
         {
-            fadingManager.HidePanel(settingsPanel, uiTransitionsLatency);
+            settingPointTransitions.FromTransition();
             OnButtonClick?.Invoke();
         }
         

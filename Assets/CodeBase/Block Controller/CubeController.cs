@@ -4,26 +4,21 @@ using Game_Manager;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Controllers
+namespace Block_Controller.Scripts
 {
     public class CubeController : MonoBehaviour
     {
-        public static readonly Vector3 DefaultScale = new Vector3(5, 0.5f, 5);
-
         [SerializeField] private Transform lastCubeTransform;
         [SerializeField] private CubeSpawner spawner;
         [SerializeField] private Transform placedBlocks;
         [SerializeField] private Transform fallingBlocks;
-        
         [SerializeField] private float moveSpeed;
         [SerializeField] private float maxSpeed;
         [SerializeField] private float perfectHangoverDeviation = 0.002f;
         [SerializeField] private bool isCanMove = true;
         
-        private Transform _startBlock;
-        private Rigidbody _rigidbody;
-        private MeshRenderer _renderer;
-
+        public static readonly Vector3 DefaultScale = new Vector3(5, 0.5f, 5);
+        
         public static Action OnStack;
         public static Action OnPerfectStack;
         public static event Action OnBlockPlaced;
@@ -36,6 +31,10 @@ namespace Controllers
 
         private Vector3 _startPosition;
         private const float MoveBackDistance = 10f;
+        
+        private Transform _startBlock;
+        private Rigidbody _rigidbody;
+        private MeshRenderer _renderer;
 
         public static event Action OnMiss;
         
@@ -119,39 +118,38 @@ namespace Controllers
 
         private void Stop()
         {
-            if (isCanMove)
-            {
-                CubeState currentCubeState = CubeState.Stack;
-                float hangover = CalculateHangover();
+            if (!isCanMove) return;
+            
+            CubeState currentCubeState = CubeState.Stack;
+            float hangover = CalculateHangover();
 
-                float max = _moveDirection == MoveDirection.Z
-                    ? lastCubeTransform.transform.localScale.z
-                    : lastCubeTransform.transform.localScale.x;
+            float max = _moveDirection == MoveDirection.Z
+                ? lastCubeTransform.transform.localScale.z
+                : lastCubeTransform.transform.localScale.x;
                 
-                if (Mathf.Abs(hangover) <= perfectHangoverDeviation)
+            if (Mathf.Abs(hangover) <= perfectHangoverDeviation)
+            {
+                hangover = 0;
+                if (_currentMoveSpeed < maxSpeed)
                 {
-                    hangover = 0;
-                    if (_currentMoveSpeed < maxSpeed)
-                    {
-                        _currentMoveSpeed += 0.5f;
-                    }
-                    currentCubeState = CubeState.PerfectStack;
+                    _currentMoveSpeed += 0.5f;
                 }
-                else
-                {
-                    if (_currentMoveSpeed > 10f)
-                    {
-                        _currentMoveSpeed -= 0.5f;
-                    }
-                }
-
-                if (Mathf.Abs(hangover) >= max)
-                {
-                    Miss();
-                    return;
-                }
-                PlaceBlock(hangover, currentCubeState);
+                currentCubeState = CubeState.PerfectStack;
             }
+            else
+            {
+                if (_currentMoveSpeed > 10f)
+                {
+                    _currentMoveSpeed -= 0.5f;
+                }
+            }
+
+            if (Mathf.Abs(hangover) >= max)
+            {
+                Miss();
+                return;
+            }
+            PlaceBlock(hangover, currentCubeState);
         }
 
         private void PlaceBlock(float hangover, CubeState state)
@@ -181,7 +179,7 @@ namespace Controllers
             return transform.position.x - lastCubeTransform.transform.position.x;
         }
 
-        void SplitCube(float hangover, float direction)
+        private void SplitCube(float hangover, float direction)
         {
             float currentLastCubeControllerLocalScale;
             float currentLastCubeTransformPosition;
@@ -256,7 +254,7 @@ namespace Controllers
         {
             var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
             cube.transform.SetParent(placedBlocks.transform);
-            cube.GetComponent<MeshRenderer>().material.color = _renderer.material.color;
+            cube.GetComponent<MeshRenderer>().material = _renderer.material;
             return cube;
         }
 
@@ -276,7 +274,7 @@ namespace Controllers
             var newCube = CreateNewCube();
 
             newCube.transform.position = transform.position;
-            newCube.transform.localScale = transform.localScale;
+            newCube.transform.localScale = transform.localScale; 
 
             lastCubeTransform = newCube.transform;
         }

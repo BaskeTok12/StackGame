@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lastCubeTransform: {fileID: 0}
   spawner: {fileID: 0}
-  plasedBlocks: {fileID: 0}
+  placedBlocks: {fileID: 0}
   fallingBlocks: {fileID: 0}
   moveSpeed: 0
   maxSpeed: 0

@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
-using Controllers;
+using Block_Controller.Scripts;
+using Camera;
+using Input_Manager;
 using SFX.Scripts;
 using UnityEngine;
 using Zenject;
@@ -9,6 +11,15 @@ namespace Game_Manager
 {
     public class GameManager : MonoBehaviour
     {
+        [Header("Start Cube")]
+        [SerializeField] private MeshRenderer startCubeMaterial;
+        [SerializeField] private MeshRenderer startTowerMaterial;
+
+        [Header("Fog")] 
+        [SerializeField] private MeshRenderer fogMaterial;
+
+        [SerializeField] private UnityEngine.Camera mainCamera;
+        
         public static event Action OnStart;
         public static event Action OnRestart;
         public static event Action OnClick;
@@ -20,20 +31,12 @@ namespace Game_Manager
     
         private SoundManager _soundManager;
 
-        [Header("Start Cube")]
-        [SerializeField] private MeshRenderer startCubeMaterial;
-        [SerializeField] private MeshRenderer startTowerMaterial;
-
-        [Header("Fog")] 
-        [SerializeField] private MeshRenderer fogMaterial;
-
-        [SerializeField] private Camera mainCamera;
-
         private Material _stackMaterial;
         private Material _environmentMaterial;
         
         private static readonly int FogColor = Shader.PropertyToID("_FogColor");
         private const string BestScoreProp = "BestScore";
+        
         public int Scores { private set; get; }
         public int BestScore { private set; get; }
         public int PerfectStacksCount { private set; get; }
@@ -64,7 +67,6 @@ namespace Game_Manager
             CubeController.OnPerfectStack += IncreasePerfectStackCount;
             CubeController.OnSlice += ResetPerfectStackCount;
             CubeController.OnMiss += SetBestScore;
-
             CameraManager.OnCameraReset += SetSceneStyle;
         }
     
@@ -74,7 +76,6 @@ namespace Game_Manager
             CubeController.OnPerfectStack -= IncreasePerfectStackCount;
             CubeController.OnSlice -= ResetPerfectStackCount;
             CubeController.OnMiss -= SetBestScore;
-            
             CameraManager.OnCameraReset -= SetSceneStyle;
         }
 
